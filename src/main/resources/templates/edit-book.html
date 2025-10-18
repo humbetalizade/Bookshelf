@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kitabı Redaktə Et</title>
+</head>
+<body>
+<h1>Kitabı Redaktə Et</h1>
+
+<form th:action="@{'/books/edit/' + ${book.id}}" th:object="${book}" method="post">
+    <label>Ad:</label>
+    <input type="text" th:field="*{title}" /><br><br>
+
+    <label>Müəllif:</label>
+    <input type="text" th:field="*{author}" /><br><br>
+
+    <label>İl:</label>
+    <input type="number" th:field="*{year}" /><br><br>
+
+    <button type="submit">Yadda saxla</button>
+</form>
+
+<br>
+<a href="/books">Kitab Siyahısına Qayıt</a>
+</body>
+</html>

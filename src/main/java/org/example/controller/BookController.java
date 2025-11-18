@@ -1,44 +1,76 @@
 package org.example.controller;
 
 
+import org.example.dto.bookDtos.BookDto;
+import org.example.repository.AuthorRepository;
+import org.example.repository.GenresRepository;
+import org.example.service.BookService;
+import org.example.service.LibraffScraperService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.example.entity.BookEntity;
 import org.example.repository.BookRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Controller()
 @RequestMapping("/books")
 public class BookController {
 
+    private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
+    private final BookService bookService;
 
-    public BookController(BookRepository bookRepository) {
+    @Autowired
+    private final GenresRepository genresRepository;
+
+    public BookController(AuthorRepository authorRepository, BookRepository bookRepository, BookService bookService, GenresRepository genresRepository) {
+        this.authorRepository = authorRepository;
         this.bookRepository = bookRepository;
+        this.bookService = bookService;
+        this.genresRepository = genresRepository;
     }
 
-    @GetMapping
-    public String listBooks(Model model) {
-        model.addAttribute("books", bookRepository.findAll());
+    @GetMapping()
+    public String getAllBooks(Model model) {
+        List<BookDto> books=bookService.getAllBooks();
+        model.addAttribute("books", books);
         return "index";
     }
 
     @GetMapping("/add")
     public String addBookForm(Model model) {
         model.addAttribute("book", new BookEntity());
-        return "add-book"; // add-book.html göstər
+        model.addAttribute("genres", genresRepository.findAll());
+        return "add-book";
     }
 
     @PostMapping("/add")
-    public String addBookSubmit(@ModelAttribute BookEntity book) {
+    public String addBookSubmit(@ModelAttribute("book") BookEntity book) {
         bookRepository.save(book);
         return "redirect:/books";
     }
 
+
+    @GetMapping("/search")
+    public String searchBook(@RequestParam("keyword") String keyword, Model model){
+        List<BookEntity> results=bookRepository.findByTitleContainingIgnoreCase(keyword);
+        if(results.isEmpty()){
+            model.addAttribute("message", "Belə kitab yoxdur.");
+        }else{
+            model.addAttribute("books",results);
+        }
+        return "index";
+    }
+
+
+
     @GetMapping("/delete/{id}")
     public String deleteBook(@PathVariable Long id) {
-        bookRepository.deleteById(id);
+        bookService.deleteBook(id);
         return "redirect:/books";
     }
 
@@ -63,5 +95,13 @@ public class BookController {
         bookRepository.save(book);
         return "redirect:/books";
     }
+
+
+    @GetMapping("/scrape-libraff")
+    public String scrapeLibraff(LibraffScraperService scraperService) {
+        scraperService.scrapeBooks();
+        return "redirect:/books";
+    }
+
 
 }

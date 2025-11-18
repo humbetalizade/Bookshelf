@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Bookworm.az - Janrlar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+
+<!-- Header fragment -->
+<div th:replace="fragments/header :: header"></div>
+
+
+
+<!-- Content -->
+<div class="max-w-6xl mx-auto mt-8 p-6 bg-white rounded-xl shadow-lg">
+    <h1 class="text-2xl font-bold mb-6 text-gray-800">📚 Janrlar Siyahısı</h1>
+
+    <div th:if="${#lists.isEmpty(genres)}" class="text-gray-600">
+        Hələ heç bir janr əlavə edilməyib.
+    </div>
+
+    <table th:if="${!#lists.isEmpty(genres)}" class="w-full table-auto border-collapse">
+        <thead>
+        <tr class="bg-gray-200 text-gray-700">
+            <th class="px-4 py-2 text-left">ID</th>
+            <th class="px-4 py-2 text-left">Ad</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="genre : ${genres}" class="border-b hover:bg-gray-50 transition">
+            <td class="px-4 py-2" th:text="${genre.id}"></td>
+            <td class="px-4 py-2 font-semibold" th:text="${genre.name}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

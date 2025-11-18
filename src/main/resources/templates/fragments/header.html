@@ -1,0 +1,35 @@
+<div th:fragment="header" xmlns:th="http://www.w3.org/1999/xhtml">
+    <!-- fragments/header.html -->
+    <header class="bg-white shadow-md">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="/" class="text-xl font-bold text-blue-700">Bookworm.az</a>
+
+            <!-- 🔍 Axtarış formu -->
+            <form th:action="@{/books/search}" method="get" class="flex space-x-2">
+                <input
+                        type="text"
+                        name="keyword"
+                        placeholder="Kitab axtar..."
+                        class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        required
+                />
+                <button
+                        type="submit"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+                >
+                    Axtar
+                </button>
+            </form>
+        </div>
+    </header>
+
+    <nav class="bg-gray-50 shadow-inner">
+        <div class="max-w-6xl mx-auto px-6 py-3 flex space-x-6">
+            <a th:href="@{/books}" class="text-gray-700 hover:text-blue-600">Kitablar</a>
+            <a th:href="@{/authors}" class="text-gray-700 hover:text-blue-600">Müəlliflər</a>
+            <a th:href="@{/genres}" class="text-gray-700 hover:text-blue-600">Janrlar</a>
+            <a th:href="@{/discounts}" class="text-gray-700 hover:text-blue-600">Endirimlər</a>
+            <a th:href="@{/classic}" class="text-gray-700 hover:text-blue-600">Klassiklər</a>
+        </div>
+    </nav>
+</div>

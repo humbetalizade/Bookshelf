@@ -2,8 +2,7 @@ package org.example.entity;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import org.example.dto.AuthorDto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Year;
@@ -16,21 +15,20 @@ public class AuthorEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+
     private String name;
 
-    @NotBlank
-    @Email
-    private String email;
-
-    @DateTimeFormat(pattern = "YYYY")
+    @DateTimeFormat(pattern = "yyyy")
     private Year birthYear;
 
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<BookEntity> books;
 
-
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 
     public AuthorEntity() {
     }
@@ -39,14 +37,17 @@ public class AuthorEntity {
         return id;
     }
 
+    public void setBooks(List<BookEntity> books) {
+        this.books = books;
+    }
+
+    public List<BookEntity> getBooks() {
+        return books;
+    }
+
     public String getName() {
         return name;
     }
-
-    public String getEmail() {
-        return email;
-    }
-
     public Year getBirthYear() {
         return birthYear;
     }
@@ -60,9 +61,6 @@ public class AuthorEntity {
         this.name = name;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public void setBirthYear(Year birthYear) {
         this.birthYear = birthYear;

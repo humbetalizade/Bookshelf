@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Kitablar | Bookworm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<!-- Header -->
+<div th:replace="~{fragments/header :: header}"></div>
+
+<div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">👑 Admin Panel</h1>
+        <a th:href="@{/admin/add}" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition-all">
+            ➕ Yeni Kitab Əlavə Et
+        </a>
+    </div>
+
+    <!-- Kitablar Cədvəli -->
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gradient-to-r from-blue-500 to-indigo-600">
+            <tr>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">ID</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Adı</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Müəllif</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">İl</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Janrlar</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Əməliyyat</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+            <tr th:each="book : ${books}" class="hover:bg-gray-50 transition">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${book.id}"></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${book.title}"></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${book.author?.name}"></td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${book.publishYear}"></td>
+                <td class="px-6 py-4 text-sm text-gray-900">
+                            <span th:each="genre : ${book.genres}"
+                                  class="inline-block bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-semibold mr-1 mb-1">
+                                <span th:text="${genre}"></span>
+                            </span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
+                    <a th:href="@{/admin/edit/{id}(id=${book.id})}"
+                       class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-xs font-semibold">✏️ Redaktə</a>
+                    <a th:href="@{/admin/delete/{id}(id=${book.id})}"
+                       class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-xs font-semibold"
+                       onclick="return confirm('Silinsin?')">🗑️ Sil</a>
+                </td>
+            </tr>
+            <tr th:if="${books.isEmpty()}" class="text-center py-12">
+                <td colspan="6" class="text-gray-500 text-lg">Henüz kitab yoxdur! ➕ Əlavə edin.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

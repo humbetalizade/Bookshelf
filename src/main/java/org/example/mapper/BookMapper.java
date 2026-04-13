@@ -6,6 +6,7 @@ import org.example.entity.BookEntity;
 import org.example.entity.GenresEntity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class BookMapper {
@@ -30,8 +31,8 @@ public class BookMapper {
         dto.setGenres(entity.getGenres() != null ?
                 entity.getGenres().stream()
                         .map(GenresEntity::getName)
-                        .collect(Collectors.toList()) :
-                new ArrayList<>()
+                        .collect(Collectors.toSet()) :  // ✅ Set<String> yaradır
+                new HashSet<>()                    // ✅ Boş Set verir
         );
         return dto;
     }

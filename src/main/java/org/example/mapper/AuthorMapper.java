@@ -5,9 +5,7 @@ import org.example.entity.AuthorEntity;
 import org.example.entity.BookEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AuthorMapper {
 

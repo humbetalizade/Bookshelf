@@ -1,10 +1,8 @@
 package org.example.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -25,7 +23,7 @@ public class GenresEntity {
 
     @Override
     public String toString() {
-        return "name=" + name;
+        return "name " + name;
     }
 
     public GenresEntity(String genre) {
@@ -46,6 +44,14 @@ public class GenresEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setBooks(Set<BookEntity> books) {
+        this.books = books;
+    }
+
+    public Set<BookEntity> getBooks() {
+        return books;
     }
 }
 

@@ -3,7 +3,6 @@ package org.example.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-
 import java.util.Set;
 
 
@@ -38,12 +37,12 @@ public class BookEntity {
 
     public BookEntity() {}
 
-    public BookEntity(Long id, String title, Integer year, AuthorEntity author, Set<GenresEntity> genre) {
+    public BookEntity(Long id, String title, Integer year, AuthorEntity author, Set<GenresEntity> genres) {
         this.id = id;
         this.title = title;
         this.year = year;
         this.author = author;
-        this.genres = genre;
+        this.genres = genres;
     }
 
     public Long getId() {

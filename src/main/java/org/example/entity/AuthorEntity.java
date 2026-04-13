@@ -2,7 +2,6 @@ package org.example.entity;
 
 
 import jakarta.persistence.*;
-import org.example.dto.AuthorDto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Year;
@@ -18,8 +17,7 @@ public class AuthorEntity {
 
     private String name;
 
-    @DateTimeFormat(pattern = "yyyy")
-    private Year birthYear;
+    private Integer birthYear;
 
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
@@ -48,7 +46,7 @@ public class AuthorEntity {
     public String getName() {
         return name;
     }
-    public Year getBirthYear() {
+    public Integer getBirthYear() {
         return birthYear;
     }
 
@@ -62,7 +60,9 @@ public class AuthorEntity {
     }
 
 
-    public void setBirthYear(Year birthYear) {
+    public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
     }
+
+
 }

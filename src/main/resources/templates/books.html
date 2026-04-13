@@ -2,7 +2,7 @@
 <html lang="az" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Bookworm.az - Kitablar</title>
+    <title>📚 Kitab Siyahısı</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 font-sans">
@@ -21,20 +21,19 @@
         </a>
     </div>
 
-
-    <!-- Əgər kitab yoxdur -->
-    <div th:if="${message != null}" class="text-gray-600 mb-4">
-        <p th:text="${message}"></p>
+    <!-- Əgər kitab yoxdursa -->
+    <div th:if="${#lists.isEmpty(books)}" class="text-gray-600">
+        Belə kitab yoxdur 📖
     </div>
 
     <!-- Kitab cədvəli -->
-    <div th:if="${books != null and !#lists.isEmpty(books)}" class="overflow-x-auto">
+    <div th:if="${!#lists.isEmpty(books)}" class="overflow-x-auto">
         <table class="w-full table-auto border-collapse">
             <thead>
             <tr class="bg-gray-200 text-gray-700">
                 <th class="px-4 py-2 text-left">Başlıq</th>
                 <th class="px-4 py-2 text-left">Müəllif</th>
-                <th class="px-4 py-2 text-left">Janrlar</th>
+                <th class="px-4 py-2 text-left">Janr</th>
                 <th class="px-4 py-2 text-left">İl</th>
                 <th class="px-4 py-2 text-center">Əməliyyatlar</th>
             </tr>
@@ -43,9 +42,7 @@
             <tr th:each="book : ${books}" class="border-b hover:bg-gray-50 transition">
                 <td class="px-4 py-2 font-semibold text-gray-800" th:text="${book.title}"></td>
                 <td class="px-4 py-2 text-gray-700" th:text="${book.author != null ? book.author.name : '—'}"></td>
-                <td class="px-4 py-2 text-gray-700">
-                    <span th:each="g : ${book.genres}" th:text="${g}" th:append="${!#lists.isLast(g, book.genres)} ? ', ' : ''"></span>
-                </td>
+                <td class="px-4 py-2 text-gray-700" th:text="${#lists.isEmpty(book.genres) ? '—' : book.genres.stream().reduce((g1, g2) -> g1 + ', ' + g2).get()}"></td>
                 <td class="px-4 py-2 text-gray-700" th:text="${book.year}"></td>
                 <td class="px-4 py-2 text-center space-x-3">
                     <a th:href="@{'/books/edit/' + ${book.id}}" class="text-blue-600 hover:underline">Redaktə</a>

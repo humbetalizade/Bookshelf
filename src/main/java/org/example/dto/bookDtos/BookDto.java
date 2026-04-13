@@ -1,9 +1,7 @@
 package org.example.dto.bookDtos;
 
 import org.example.dto.AuthorDto;
-import org.example.dto.GenresDto;
-
-import java.util.List;
+import java.util.Set;
 
 public class BookDto {
 
@@ -11,7 +9,7 @@ public class BookDto {
     private String title;
     private Integer year;
     private AuthorDto author;
-    private List<String> genres;
+    private Set<String> genres;
 
 
     public Long getId() { return id; }
@@ -28,7 +26,7 @@ public class BookDto {
         return author;
     }
 
-    public List<String> getGenres() {
+    public Set<String> getGenres() {
         return genres;
     }
 
@@ -49,7 +47,7 @@ public class BookDto {
         this.author = author;
     }
 
-    public void setGenres(List<String> genre) {
+    public void setGenres(Set<String> genre) {
         this.genres = genre;
     }
 }

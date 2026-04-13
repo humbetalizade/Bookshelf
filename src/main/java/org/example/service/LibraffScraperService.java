@@ -37,7 +37,7 @@ public class LibraffScraperService {
                 entity.setTitle(title);
                 entity.setYear(0); // hələlik boş qala bilər
                 entity.setAuthor(null); // istəsən sonradan əlavə edərik
-                entity.setGenre(null);
+                entity.setGenres(null);
                 // istəsən price üçün ayrıca field açarsan
 
                 // 4️⃣ DB-yə əlavə et (əgər eyni kitab yoxdursa)

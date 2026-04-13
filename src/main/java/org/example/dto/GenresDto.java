@@ -1,7 +1,5 @@
 package org.example.dto;
 
-import org.example.dto.bookDtos.BookDto;
-
 import java.util.List;
 
 public class GenresDto {

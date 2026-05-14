@@ -2,11 +2,10 @@ package org.example.mapper;
 
 import org.example.dto.AuthorDto;
 import org.example.entity.AuthorEntity;
-import org.example.entity.BookEntity;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 
+@Component
 public class AuthorMapper {
 
 
@@ -15,14 +14,6 @@ public class AuthorMapper {
         dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setBirthYear(entity.getBirthYear());
-
-        if (entity.getBooks() != null && !entity.getBooks().isEmpty()) {
-            List<Long> bookIds = new ArrayList<>();
-            for (BookEntity book : entity.getBooks()) {
-                bookIds.add(book.getId());
-            }
-            dto.setBookIds(bookIds);
-        }
 
         return dto;
     }

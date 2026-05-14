@@ -1,6 +1,7 @@
 package org.example.controller;
 
 
+import org.example.service.AuthorService;
 import org.springframework.ui.Model;
 import org.example.repository.AuthorRepository;
 import org.springframework.stereotype.Controller;
@@ -15,15 +16,18 @@ public class AuthorController {
 
     private final AuthorRepository authorRepository;
 
+    private final AuthorService authorService;
 
-    public AuthorController(AuthorRepository authorRepository) {
+
+    public AuthorController(AuthorRepository authorRepository, AuthorService authorService) {
         this.authorRepository = authorRepository;
+        this.authorService = authorService;
     }
 
 
-    @GetMapping("/authors")
+    @GetMapping
     public String listAuthors(Model model){
-        model.addAttribute("authors", authorRepository.findAll());
+        model.addAttribute("authors", authorService.getAllAuthors());
         return "authors";
     }
 

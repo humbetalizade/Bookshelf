@@ -2,9 +2,6 @@ package org.example.entity;
 
 
 import jakarta.persistence.*;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.Year;
 import java.util.List;
 
 @Entity
@@ -20,7 +17,7 @@ public class AuthorEntity {
     private Integer birthYear;
 
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BookEntity> books;
 
     @Override

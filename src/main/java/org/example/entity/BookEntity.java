@@ -22,7 +22,7 @@ public class BookEntity {
     private Integer year;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "author_id")
     private AuthorEntity author;
 

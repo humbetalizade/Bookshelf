@@ -16,7 +16,9 @@
     <!-- Başlıq və əlavə et düyməsi -->
     <div class="flex justify-between items-center mb-6">
         <h1 class="text-2xl font-bold text-gray-800">📚 Kitab Siyahısı</h1>
-        <a th:href="@{/books/add}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition">
+
+        <a th:href="@{/books/add}"
+           class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition">
             + Yeni Kitab
         </a>
     </div>
@@ -38,20 +40,43 @@
                 <th class="px-4 py-2 text-center">Əməliyyatlar</th>
             </tr>
             </thead>
+
             <tbody>
             <tr th:each="book : ${books}" class="border-b hover:bg-gray-50 transition">
-                <td class="px-4 py-2 font-semibold text-gray-800" th:text="${book.title}"></td>
-                <td class="px-4 py-2 text-gray-700" th:text="${book.author != null ? book.author.name : '—'}"></td>
-                <td class="px-4 py-2 text-gray-700" th:text="${#lists.isEmpty(book.genres) ? '—' : book.genres.stream().reduce((g1, g2) -> g1 + ', ' + g2).get()}"></td>
-                <td class="px-4 py-2 text-gray-700" th:text="${book.year}"></td>
-                <td class="px-4 py-2 text-center space-x-3">
-                    <a th:href="@{'/books/edit/' + ${book.id}}" class="text-blue-600 hover:underline">Redaktə</a>
-                    <a th:href="@{'/books/delete/' + ${book.id}}" class="text-red-600 hover:underline">Sil</a>
+
+                <td class="px-4 py-2 font-semibold text-gray-800"
+                    th:text="${book.title}">
                 </td>
+
+                <td class="px-4 py-2 text-gray-700"
+                    th:text="${book.author != null ? book.author.name : '—'}">
+                </td>
+
+                <td class="px-4 py-2 text-gray-700"
+                    th:text="${#lists.isEmpty(book.genres) ? '—' : book.genres.stream().reduce((g1, g2) -> g1 + ', ' + g2).get()}">
+                </td>
+
+                <td class="px-4 py-2 text-gray-700"
+                    th:text="${book.year}">
+                </td>
+
+                <!-- ACTIONS -->
+                <td class="px-4 py-2 text-center space-x-3">
+
+                    <a th:href="@{'/books/edit/' + ${book.id}}"
+                       class="text-blue-600 hover:underline">
+                        Redaktə
+                    </a>
+                    <a th:href="@{/books/delete/{id}(id=${book.id})}">Sil</a>
+                </td>
+
+
+
             </tr>
             </tbody>
         </table>
     </div>
+
 </div>
 
 </body>

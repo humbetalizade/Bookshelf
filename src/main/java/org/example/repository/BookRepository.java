@@ -13,6 +13,8 @@ public interface BookRepository  extends JpaRepository<BookEntity,Long> {
     List<BookEntity> findByTitleContainingIgnoreCase(String keyword);
     boolean existsByTitle(String title);
 
+
+
 }
 
 

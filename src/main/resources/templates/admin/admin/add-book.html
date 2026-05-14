@@ -12,7 +12,7 @@
     <div class="bg-white rounded-2xl shadow-2xl p-8">
         <div class="flex items-center mb-8">
             <h1 class="text-3xl font-bold text-gray-900">➕ Yeni Kitab Əlavə Et</h1>
-            <a th:href="@{/admin/books}" class="ml-auto bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-xl font-semibold">← Geri</a>
+            <a th:href="@{/add/books}" class="ml-auto bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-xl font-semibold">← Geri</a>
         </div>
 
         <form th:action="@{/admin/add}" th:object="${book}" method="post" class="space-y-6">

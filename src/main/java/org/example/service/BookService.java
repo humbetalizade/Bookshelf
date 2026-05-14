@@ -13,8 +13,16 @@ import org.example.mapper.GenresMapper;
 import org.example.repository.AuthorRepository;
 import org.example.repository.BookRepository;
 import org.example.repository.GenresRepository;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.ResourceAccessException;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,13 +33,19 @@ public class BookService implements BookServiceInterface {
     private final AuthorRepository authorRepository;
     private final GenresRepository genresRepository;
 
+
+
     public BookService(BookRepository bookRepository,
                        AuthorRepository authorRepository,
-                       GenresRepository genreRepository) {
+                       GenresRepository genreRepository, AuthorMapper authorMapper) {
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
         this.genresRepository = genreRepository;
     }
+
+
+
+    //Bütün kitabları qaytarır
     @Override
     public List<BookDto> getAllBooks() {
         List<BookEntity>books = bookRepository.findAll();
@@ -42,6 +56,65 @@ public class BookService implements BookServiceInterface {
         return dtoBooks;
     }
 
+
+
+
+    //Jsoupla DB-ya kitab əlavə edir
+    public void importBooksFromAlinino() throws IOException, InterruptedException {
+        Document doc = Jsoup.connect(
+                        "https://alinino.az/collection/knigi-na-azerbaydzhanskom-yazyke")
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+                .timeout(10000)
+                .get();
+
+        Elements cards = doc.select("a.product-card__title");
+        System.out.println("Tapılan kitab sayı: " + cards.size());
+
+        for (Element card : cards) {
+            String title = card.text();
+            String productUrl = "https://alinino.az" + card.attr("href");
+
+            // Kitabın öz səhifəsinə gir
+            Document productDoc = Jsoup.connect(productUrl)
+                    .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+                    .timeout(10000)
+                    .get();
+
+            // Müəllif adını çək
+            String author = "";
+            Elements properties = productDoc.select(".product__properties-main-item");
+            for (Element prop : properties) {
+                if (prop.text().contains("Müəllif:")) {
+                    author = prop.select("a").text();
+                    break;
+                }
+            }
+            System.out.println("Müəllif: " + author); // ← bura əlavə et
+
+            if (!bookRepository.existsByTitle(title)) {
+                BookEntity book = new BookEntity();
+                AuthorEntity authorEntity=new AuthorEntity();
+                authorEntity.setName(author);
+                book.setTitle(title);
+                book.setAuthor(authorEntity);
+                book.setYear(book.getYear());
+                bookRepository.save(book);
+            } else {
+                System.out.println("Artıq var: " + title);
+            }
+
+            System.out.println("Kitab: " + title + " | Müəllif: " + author);
+
+            Thread.sleep(1000); // hər requestdən sonra gözlə
+        }
+
+    }
+
+
+
+
+
+    //Yeni kitab əlavə etmək
     @Override
     public void saveBook(BookCreateDto bookCreateDto) {
         BookEntity bookEntity= BookMapper.toEntityCreate(bookCreateDto);
@@ -69,6 +142,8 @@ public class BookService implements BookServiceInterface {
 
 
 
+
+    //Kitabı silmək
     @Override
     public void deleteBook(Long id) {
         bookRepository.deleteById(id);
@@ -76,6 +151,8 @@ public class BookService implements BookServiceInterface {
 
 
 
+
+    //Kitabı axtarmaq
     @Override
     public List<BookDto> searchBooks(String keyword) {
         if(keyword == null || keyword.trim().isEmpty()) {
@@ -86,7 +163,7 @@ public class BookService implements BookServiceInterface {
     }
 
 
-
+    @Transactional
     public List<AuthorDto> getAllAuthors(){
         if (authorRepository==null){
             return List.of();

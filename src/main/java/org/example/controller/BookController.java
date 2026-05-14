@@ -5,7 +5,6 @@ import org.example.dto.bookDtos.BookCreateDto;
 import org.example.dto.bookDtos.BookDto;
 import org.example.service.BookService;
 import org.example.service.LibraffScraperService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -26,12 +25,11 @@ public class BookController {
 
     @GetMapping("/books")
     public String listBooks(Model model) {
-        //List<BookDto> books = bookService.getAllBooks();
-        model.addAttribute("books", List.of());
+        model.addAttribute("books", bookService.getAllBooks());
         return "index";
     }
 
-    @GetMapping("/books/add")
+    @GetMapping("/add")
     public String addBookForm(Model model) {
         model.addAttribute("book", new BookCreateDto());
         model.addAttribute("authors", bookService.getAllAuthors());
@@ -39,7 +37,7 @@ public class BookController {
         return "add-book";
     }
 
-    @PostMapping("/books/add")
+    @PostMapping("/add")
     public String addBookSubmit(@ModelAttribute("book") BookCreateDto book) {
         bookService.saveBook(book);
         return "redirect:/books";
@@ -50,6 +48,7 @@ public class BookController {
     public String searchBook(@RequestParam(value = "keyword", required = false) String keyword, Model model){
         List<BookDto> results=bookService.searchBooks(keyword);
         if(results.isEmpty()){
+            model.addAttribute("books", List.of()); // boş list
             model.addAttribute("message", "Belə kitab yoxdur.");
         }else{
             model.addAttribute("books",results);
@@ -59,11 +58,11 @@ public class BookController {
 
 
 
-//    @GetMapping("/delete/{id}")
-//    public String deleteBook(@PathVariable Long id) {
-//        bookService.deleteBook(id);
-//        return "redirect:/books";
-//    }
+    @GetMapping("/books/delete/{id}")
+    public String deleteBook(@PathVariable Long id) {
+        bookService.deleteBook(id);
+        return "redirect:/books";
+    }
 //
 //    @GetMapping("/edit/{id}")
 //    public String editBooksForm(@PathVariable Long id, Model model) {

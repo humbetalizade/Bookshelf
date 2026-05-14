@@ -28,6 +28,7 @@ public class BookMapper {
         }
 
 
+
         dto.setGenres(entity.getGenres() != null ?
                 entity.getGenres().stream()
                         .map(GenresEntity::getName)
